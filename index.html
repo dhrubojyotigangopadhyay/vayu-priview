@@ -1,399 +1,754 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VAYU OS — Executive Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:var(--font-sans);background:var(--color-background-primary);color:var(--color-text-primary);}
-.page{width:100%;overflow:hidden;}
+:root{
+  --ink:#0D0D0D;
+  --ink-2:#3A3A3A;
+  --ink-3:#6B6B6B;
+  --ink-4:#9A9A9A;
+  --surface:#FFFFFF;
+  --surface-2:#F7F6F4;
+  --surface-3:#EFEDE9;
+  --border:#E5E2DC;
+  --border-2:#D4D0C8;
+  --accent:#1A1A1A;
+  --gold:#B8860B;
+  --gold-light:#FBF6E9;
+  --gold-mid:#F0E4C0;
+  --indigo:#3730A3;
+  --indigo-light:#EEF2FF;
+  --indigo-mid:#C7D2FE;
+  --red:#B91C1C;
+  --red-light:#FEF2F2;
+  --green:#15803D;
+  --green-light:#F0FDF4;
+  --teal:#0E7490;
+  --teal-light:#ECFEFF;
+  --violet:#6D28D9;
+  --violet-light:#F5F3FF;
+  --amber:#92400E;
+  --amber-light:#FFFBEB;
+  --r:10px;
+  --r-lg:14px;
+  --shadow:0 1px 3px rgba(0,0,0,0.06),0 4px 16px rgba(0,0,0,0.04);
+  --shadow-lg:0 2px 8px rgba(0,0,0,0.08),0 16px 48px rgba(0,0,0,0.06);
+}
+body{font-family:'Geist',system-ui,sans-serif;background:var(--surface-2);color:var(--ink);font-size:13px;line-height:1.5;-webkit-font-smoothing:antialiased;}
 
-/* NAV */
-.nav{display:flex;align-items:center;justify-content:space-between;padding:14px 28px;border-bottom:0.5px solid var(--color-border-tertiary);position:sticky;top:0;background:var(--color-background-primary);z-index:100;}
-.nav-logo{display:flex;align-items:center;gap:8px;}
-.logo-icon{width:28px;height:28px;border-radius:7px;background:#4f46e5;display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;}
-.nav-brand{font-weight:500;font-size:15px;}
-.nav-links{display:flex;gap:20px;}
-.nav-links a{font-size:13px;color:var(--color-text-secondary);text-decoration:none;}
-.nav-links a:hover{color:var(--color-text-primary);}
-.nav-cta{background:var(--color-text-primary);color:var(--color-background-primary);padding:7px 16px;border-radius:var(--border-radius-md);font-size:13px;font-weight:500;border:none;cursor:pointer;}
+/* SHELL */
+.shell{display:flex;height:100vh;overflow:hidden;}
 
-/* HERO */
-.hero{text-align:center;padding:60px 28px 40px;background:linear-gradient(180deg,#f5f3ff 0%,var(--color-background-primary) 100%);}
-.hero-badge{display:inline-flex;align-items:center;gap:6px;background:var(--color-background-primary);border:0.5px solid #c7d2fe;border-radius:99px;padding:5px 14px;font-size:11px;color:#4f46e5;font-weight:500;margin-bottom:20px;}
-.badge-dot{width:6px;height:6px;border-radius:50%;background:#22c55e;animation:pulse 2s infinite;}
-@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
-.hero h1{font-size:40px;font-weight:500;line-height:1.1;letter-spacing:-0.5px;margin-bottom:14px;color:var(--color-text-primary);}
-.hero h1 span{color:#4f46e5;}
-.hero p{font-size:15px;color:var(--color-text-secondary);max-width:480px;margin:0 auto 24px;line-height:1.6;}
-.hero-btns{display:flex;gap:10px;justify-content:center;margin-bottom:40px;}
-.btn-primary{background:#111;color:#fff;padding:10px 22px;border-radius:var(--border-radius-md);font-size:14px;font-weight:500;border:none;cursor:pointer;display:flex;align-items:center;gap:6px;}
-.btn-secondary{background:var(--color-background-primary);color:var(--color-text-primary);padding:10px 22px;border-radius:var(--border-radius-md);font-size:14px;border:0.5px solid var(--color-border-secondary);cursor:pointer;display:flex;align-items:center;gap:6px;}
+/* SIDEBAR */
+.sidebar{width:210px;flex-shrink:0;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;position:relative;}
+.sidebar::after{content:'';position:absolute;right:0;top:0;bottom:0;width:1px;background:linear-gradient(180deg,transparent,var(--border-2) 30%,var(--border-2) 70%,transparent);}
 
-/* DASHBOARD PREVIEW */
-.dash-preview{margin:0 28px;border-radius:var(--border-radius-lg);border:0.5px solid var(--color-border-tertiary);overflow:hidden;background:var(--color-background-primary);box-shadow:0 8px 32px rgba(0,0,0,0.08);}
-.dash-chrome{background:var(--color-background-secondary);border-bottom:0.5px solid var(--color-border-tertiary);padding:10px 14px;display:flex;align-items:center;gap:10px;}
-.chrome-dots{display:flex;gap:5px;}
-.chrome-dots span{width:10px;height:10px;border-radius:50%;}
-.url-bar{flex:1;text-align:center;}
-.url-pill{display:inline-flex;align-items:center;gap:6px;background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:99px;padding:3px 12px;font-size:11px;color:var(--color-text-secondary);}
-.url-dot{width:5px;height:5px;border-radius:50%;background:#22c55e;}
-.dash-body{padding:14px;background:var(--color-background-secondary);}
-.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:10px;}
-.kpi-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:10px 12px;}
-.kpi-label{font-size:10px;color:var(--color-text-secondary);margin-bottom:4px;}
-.kpi-val{font-size:18px;font-weight:500;color:var(--color-text-primary);}
-.kpi-delta{font-size:10px;color:#16a34a;margin-top:2px;}
-.dash-grid{display:grid;grid-template-columns:1.6fr 1fr;gap:8px;}
-.dash-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:12px;}
-.dash-card-title{font-size:11px;font-weight:500;color:var(--color-text-primary);margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;}
-.live-dot{width:5px;height:5px;border-radius:50%;background:#22c55e;animation:pulse 2s infinite;}
-.activity-item{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:0.5px solid var(--color-border-tertiary);}
-.activity-item:last-child{border-bottom:none;}
-.act-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
-.act-text{font-size:11px;color:var(--color-text-secondary);flex:1;line-height:1.3;}
-.act-time{font-size:10px;color:var(--color-text-secondary);opacity:0.5;white-space:nowrap;}
-.funnel-item{margin-bottom:8px;}
-.funnel-label{display:flex;justify-content:space-between;font-size:10px;color:var(--color-text-secondary);margin-bottom:3px;}
-.funnel-bar{height:4px;background:var(--color-border-tertiary);border-radius:99px;overflow:hidden;}
-.funnel-fill{height:100%;border-radius:99px;transition:width 0.8s ease;}
+.sb-logo{padding:18px 16px 14px;border-bottom:1px solid var(--border);}
+.logo-wrap{display:flex;align-items:center;gap:10px;}
+.logo-mark{width:30px;height:30px;border-radius:8px;background:var(--ink);display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;flex-shrink:0;}
+.logo-name{font-family:'Instrument Serif',serif;font-size:17px;letter-spacing:0.01em;color:var(--ink);}
+.logo-tag{font-size:9px;color:var(--ink-4);letter-spacing:0.08em;text-transform:uppercase;margin-top:1px;font-family:'Geist Mono',monospace;}
 
-/* CAPABILITIES */
-.section{padding:48px 28px;}
-.section-label{font-size:11px;font-weight:500;color:#4f46e5;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;}
-.section-title{font-size:26px;font-weight:500;line-height:1.2;margin-bottom:8px;color:var(--color-text-primary);}
-.section-sub{font-size:14px;color:var(--color-text-secondary);margin-bottom:28px;}
-.caps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
-.cap-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:16px;}
-.cap-icon{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:10px;font-size:16px;}
-.cap-title{font-size:13px;font-weight:500;margin-bottom:4px;color:var(--color-text-primary);}
-.cap-desc{font-size:11px;color:var(--color-text-secondary);line-height:1.5;}
-.cap-stat{display:inline-block;margin-top:8px;font-size:10px;font-weight:500;padding:2px 8px;border-radius:99px;}
+.sb-section{padding:12px 8px 4px;}
+.sb-section-label{font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-4);padding:0 10px;margin-bottom:4px;font-family:'Geist Mono',monospace;}
 
-/* DARK SECTION */
-.dark-section{background:#0f0f0f;padding:48px 28px;color:#fff;}
-.dark-section .section-label{color:#818cf8;}
-.dark-section .section-title{color:#fff;}
-.dark-section .section-sub{color:#9ca3af;}
-.steps{display:flex;flex-direction:column;gap:12px;margin-top:24px;}
-.step{display:flex;align-items:flex-start;gap:14px;}
-.step-num{width:38px;height:38px;border-radius:10px;background:#1a1a1a;border:0.5px solid #333;display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;}
-.step-emoji{font-size:14px;line-height:1;}
-.step-n{font-size:8px;color:#555;font-family:var(--font-mono);}
-.step-body{background:#161616;border:0.5px solid #2a2a2a;border-radius:var(--border-radius-lg);padding:12px 14px;flex:1;}
-.step-title{font-size:13px;font-weight:500;color:#fff;margin-bottom:2px;}
-.step-desc{font-size:11px;color:#6b7280;line-height:1.5;}
+.nav-item{display:flex;align-items:center;gap:9px;padding:7px 10px;border-radius:8px;font-size:12.5px;color:var(--ink-3);cursor:pointer;margin-bottom:1px;transition:all 0.15s;font-weight:400;letter-spacing:-0.01em;}
+.nav-item:hover{background:var(--surface-2);color:var(--ink);}
+.nav-item.active{background:var(--ink);color:#fff;font-weight:500;}
+.nav-item.active i{color:#fff;}
+.nav-item i{font-size:15px;color:var(--ink-4);transition:color 0.15s;}
+.nav-item:hover i{color:var(--ink-2);}
 
-/* PRICING */
-.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:24px;}
-.price-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:18px;}
-.price-card.featured{background:#0f0f0f;border-color:#333;}
-.price-name{font-size:12px;color:var(--color-text-secondary);margin-bottom:6px;}
-.price-card.featured .price-name{color:#9ca3af;}
-.price-amount{font-size:26px;font-weight:500;color:var(--color-text-primary);margin-bottom:2px;}
-.price-card.featured .price-amount{color:#fff;}
-.price-period{font-size:11px;color:var(--color-text-secondary);}
-.price-card.featured .price-period{color:#6b7280;}
-.price-features{margin:14px 0;display:flex;flex-direction:column;gap:6px;}
-.price-feature{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--color-text-secondary);}
-.price-card.featured .price-feature{color:#9ca3af;}
-.check{color:#4f46e5;font-size:13px;}
-.price-card.featured .check{color:#818cf8;}
-.price-btn{width:100%;padding:9px;border-radius:var(--border-radius-md);font-size:12px;font-weight:500;border:0.5px solid var(--color-border-secondary);background:var(--color-background-secondary);cursor:pointer;color:var(--color-text-primary);}
-.price-card.featured .price-btn{background:#4f46e5;color:#fff;border-color:#4f46e5;}
+.sb-bottom{margin-top:auto;padding:12px 8px;border-top:1px solid var(--border);}
+.user-block{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;cursor:pointer;transition:background 0.15s;}
+.user-block:hover{background:var(--surface-2);}
+.user-avatar{width:30px;height:30px;border-radius:50%;background:var(--indigo-light);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:var(--indigo);flex-shrink:0;border:1.5px solid var(--indigo-mid);}
+.user-name{font-size:12px;font-weight:500;color:var(--ink);line-height:1.2;}
+.user-role{font-size:10px;color:var(--ink-4);}
+.trial-bar{margin:8px 8px 0;background:var(--gold-light);border:1px solid var(--gold-mid);border-radius:8px;padding:8px 10px;}
+.trial-bar-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;}
+.trial-label{font-size:10px;font-weight:500;color:var(--amber);}
+.trial-days{font-size:10px;color:var(--gold);}
+.trial-track{height:3px;background:var(--gold-mid);border-radius:99px;overflow:hidden;}
+.trial-fill{height:100%;width:71%;background:linear-gradient(90deg,var(--gold),#E6B800);border-radius:99px;}
 
-/* FAQ */
-.faq-list{margin-top:20px;display:flex;flex-direction:column;gap:8px;}
-.faq-item{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);overflow:hidden;}
-.faq-q{padding:12px 14px;font-size:13px;font-weight:500;color:var(--color-text-primary);cursor:pointer;display:flex;justify-content:space-between;align-items:center;}
-.faq-a{padding:0 14px 12px;font-size:12px;color:var(--color-text-secondary);line-height:1.6;border-top:0.5px solid var(--color-border-tertiary);}
+/* MAIN */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;background:var(--surface-2);}
 
-/* CTA */
-.cta-section{margin:0 28px 40px;background:#0f0f0f;border-radius:var(--border-radius-lg);padding:40px 28px;text-align:center;}
-.cta-section h2{font-size:26px;font-weight:500;color:#fff;margin-bottom:8px;}
-.cta-section p{font-size:14px;color:#9ca3af;margin-bottom:20px;}
-.cta-btn{display:inline-flex;align-items:center;gap:8px;background:#fff;color:#111;padding:11px 24px;border-radius:var(--border-radius-md);font-size:14px;font-weight:500;border:none;cursor:pointer;}
+/* TOPBAR */
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;height:52px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;box-shadow:0 1px 0 var(--border);}
+.topbar-left{display:flex;flex-direction:column;}
+.topbar-title{font-family:'Instrument Serif',serif;font-size:18px;color:var(--ink);line-height:1.2;letter-spacing:-0.02em;}
+.topbar-sub{font-size:11px;color:var(--ink-4);font-family:'Geist Mono',monospace;letter-spacing:0.02em;}
+.topbar-right{display:flex;align-items:center;gap:8px;}
+.icon-btn{width:32px;height:32px;border-radius:8px;border:1px solid var(--border);background:var(--surface);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.15s;}
+.icon-btn:hover{background:var(--surface-2);border-color:var(--border-2);}
+.icon-btn i{font-size:15px;color:var(--ink-3);}
+.upload-btn{display:flex;align-items:center;gap:7px;background:var(--ink);color:#fff;padding:7px 16px;border-radius:8px;font-size:12.5px;font-weight:500;border:none;cursor:pointer;letter-spacing:-0.01em;transition:opacity 0.15s;}
+.upload-btn:hover{opacity:0.85;}
+.status-pill{display:flex;align-items:center;gap:6px;background:var(--green-light);border:1px solid #BBF7D0;border-radius:99px;padding:4px 12px;font-size:11px;color:var(--green);font-weight:500;}
+.pulse{width:6px;height:6px;border-radius:50%;background:#22C55E;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.5;transform:scale(0.85);}}
 
-/* FOOTER */
-.footer{padding:20px 28px;border-top:0.5px solid var(--color-border-tertiary);display:flex;justify-content:space-between;align-items:center;}
-.footer-logo{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:500;}
-.footer-links{display:flex;gap:16px;}
-.footer-links a{font-size:12px;color:var(--color-text-secondary);text-decoration:none;}
-.footer-copy{font-size:11px;color:var(--color-text-secondary);}
+/* CONTENT */
+.content{flex:1;overflow-y:auto;padding:20px 24px 24px;scroll-behavior:smooth;}
+.content::-webkit-scrollbar{width:4px;}
+.content::-webkit-scrollbar-track{background:transparent;}
+.content::-webkit-scrollbar-thumb{background:var(--border-2);border-radius:99px;}
+
+/* DATE HEADER */
+.date-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;}
+.date-label{font-size:11px;color:var(--ink-4);font-family:'Geist Mono',monospace;letter-spacing:0.04em;}
+.period-tabs{display:flex;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:2px;gap:1px;}
+.period-tab{font-size:11px;padding:4px 10px;border-radius:6px;cursor:pointer;color:var(--ink-3);transition:all 0.15s;}
+.period-tab.active{background:var(--ink);color:#fff;font-weight:500;}
+
+/* KPI GRID */
+.kpi-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:14px;}
+.kpi-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:14px 16px;position:relative;overflow:hidden;transition:box-shadow 0.2s,transform 0.2s;cursor:default;}
+.kpi-card:hover{box-shadow:var(--shadow);transform:translateY(-1px);}
+.kpi-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;border-radius:var(--r-lg) var(--r-lg) 0 0;}
+.kpi-card.c-indigo::before{background:linear-gradient(90deg,var(--indigo),#6366F1);}
+.kpi-card.c-red::before{background:linear-gradient(90deg,var(--red),#EF4444);}
+.kpi-card.c-teal::before{background:linear-gradient(90deg,var(--teal),#06B6D4);}
+.kpi-card.c-violet::before{background:linear-gradient(90deg,var(--violet),#8B5CF6);}
+.kpi-card.c-amber::before{background:linear-gradient(90deg,var(--amber),#F59E0B);}
+.kpi-card.c-green::before{background:linear-gradient(90deg,var(--green),#22C55E);}
+.kpi-icon-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.kpi-icon{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;}
+.spark{display:flex;align-items:flex-end;gap:1.5px;height:18px;}
+.spark-bar{width:3px;border-radius:1px;opacity:0.6;}
+.kpi-val{font-size:22px;font-weight:600;line-height:1;margin-bottom:3px;letter-spacing:-0.03em;font-family:'Geist',sans-serif;}
+.kpi-lbl{font-size:10.5px;color:var(--ink-4);margin-bottom:4px;letter-spacing:0.01em;}
+.kpi-delta{font-size:10.5px;font-weight:500;display:flex;align-items:center;gap:3px;}
+.kpi-delta.up{color:var(--green);}
+.kpi-delta.up i{color:var(--green);}
+
+/* SECTION ROW */
+.row{display:grid;gap:12px;margin-bottom:12px;}
+.row-2-1{grid-template-columns:2fr 1fr;}
+.row-1-1{grid-template-columns:1fr 1fr;}
+.row-3{grid-template-columns:1.4fr 1fr 1fr;}
+
+/* CARD */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:16px 18px;box-shadow:var(--shadow);}
+.card-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.card-title{font-size:12.5px;font-weight:500;color:var(--ink);letter-spacing:-0.01em;}
+.card-badge{display:flex;align-items:center;gap:5px;font-size:10.5px;color:var(--ink-4);}
+.live-dot{width:6px;height:6px;border-radius:50%;background:#22C55E;animation:pulse 2s infinite;}
+.card-link{font-size:11px;color:var(--indigo);cursor:pointer;font-weight:500;}
+.card-link:hover{text-decoration:underline;}
+
+/* SVG CHART */
+.chart-wrap{position:relative;width:100%;}
+.chart-labels-x{display:flex;justify-content:space-between;margin-top:4px;padding:0 2px;}
+.chart-label-x{font-size:9.5px;color:var(--ink-4);font-family:'Geist Mono',monospace;}
+.chart-legend{display:flex;gap:14px;margin-top:10px;}
+.leg-item{display:flex;align-items:center;gap:5px;font-size:10.5px;color:var(--ink-3);}
+.leg-dot{width:8px;height:8px;border-radius:2px;}
+
+/* ACTIVITY FEED */
+.act-item{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);}
+.act-item:last-child{border:none;padding-bottom:0;}
+.act-node{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;}
+.act-body{flex:1;}
+.act-text{font-size:12px;color:var(--ink);line-height:1.4;letter-spacing:-0.01em;}
+.act-sub{font-size:10.5px;color:var(--ink-4);margin-top:1px;}
+.act-time{font-size:10px;color:var(--ink-4);white-space:nowrap;flex-shrink:0;font-family:'Geist Mono',monospace;}
+
+/* FUNNEL */
+.funnel-item{margin-bottom:10px;}
+.funnel-item:last-child{margin-bottom:0;}
+.funnel-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;}
+.funnel-lbl{font-size:11px;color:var(--ink-3);}
+.funnel-val{font-size:12px;font-weight:600;font-family:'Geist Mono',monospace;}
+.funnel-pct{font-size:10px;color:var(--ink-4);margin-left:4px;}
+.funnel-track{height:5px;background:var(--surface-3);border-radius:99px;overflow:hidden;}
+.funnel-fill{height:100%;border-radius:99px;transition:width 1s cubic-bezier(.16,1,.3,1);}
+
+/* HOT LEADS */
+.hot-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);}
+.hot-item:last-child{border:none;padding-bottom:0;}
+.hot-av{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex-shrink:0;background:var(--indigo-light);color:var(--indigo);}
+.hot-co{font-size:12.5px;font-weight:500;color:var(--ink);line-height:1.2;letter-spacing:-0.01em;}
+.hot-meta{font-size:10.5px;color:var(--ink-4);}
+.hot-score{text-align:right;}
+.hot-score-val{font-size:15px;font-weight:600;font-family:'Geist Mono',monospace;}
+.hot-score-lbl{font-size:9px;color:var(--ink-4);text-transform:uppercase;letter-spacing:0.05em;}
+.intent-ring{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+
+/* CHANNEL BARS */
+.ch-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.ch-row:last-child{margin-bottom:0;}
+.ch-name{font-size:11px;color:var(--ink-3);width:58px;flex-shrink:0;}
+.ch-track{flex:1;height:6px;background:var(--surface-3);border-radius:99px;overflow:hidden;}
+.ch-fill{height:100%;border-radius:99px;}
+.ch-pct{font-size:11px;font-weight:600;width:32px;text-align:right;flex-shrink:0;font-family:'Geist Mono',monospace;}
+
+/* AI INSIGHTS */
+.insights-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.insight-card{border-radius:var(--r);padding:12px 14px;border:1px solid;position:relative;overflow:hidden;}
+.ins-emoji{font-size:18px;margin-bottom:6px;display:block;}
+.ins-title{font-size:11.5px;font-weight:600;margin-bottom:3px;}
+.ins-text{font-size:11px;line-height:1.5;}
+.ins-badge{display:inline-block;font-size:9px;font-weight:600;padding:2px 7px;border-radius:99px;margin-top:6px;text-transform:uppercase;letter-spacing:0.06em;}
+
+/* SECTION DIVIDER */
+.section-divider{display:flex;align-items:center;gap:10px;margin:4px 0 12px;}
+.divider-label{font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink-4);white-space:nowrap;font-family:'Geist Mono',monospace;}
+.divider-line{flex:1;height:1px;background:var(--border);}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.fade-1{animation:fadeUp 0.4s 0.05s both ease-out;}
+.fade-2{animation:fadeUp 0.4s 0.1s both ease-out;}
+.fade-3{animation:fadeUp 0.4s 0.15s both ease-out;}
+.fade-4{animation:fadeUp 0.4s 0.2s both ease-out;}
+.fade-5{animation:fadeUp 0.4s 0.25s both ease-out;}
+.fade-6{animation:fadeUp 0.4s 0.3s both ease-out;}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--border-2);border-radius:99px;}
 </style>
 
-<h2 class="sr-only">VAYU OS landing page preview — showing all sections: hero, dashboard preview, capabilities, workflow, pricing, FAQ, and footer</h2>
+<div class="shell">
 
-<div class="page">
-
-<!-- NAV -->
-<nav class="nav">
-  <div class="nav-logo">
-    <div class="logo-icon"><i class="ti ti-bolt" aria-hidden="true"></i></div>
-    <span class="nav-brand">VAYU OS</span>
-  </div>
-  <div class="nav-links">
-    <a href="#">Features</a>
-    <a href="#">How it works</a>
-    <a href="#">Pricing</a>
-    <a href="#">FAQ</a>
-  </div>
-  <button class="nav-cta">Start Free Trial</button>
-</nav>
-
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-badge">
-    <span class="badge-dot"></span>
-    Beta — 7-day free trial, no card required
-  </div>
-  <h1>Your <span>AI Revenue</span><br>Operating System</h1>
-  <p>Automate outreach, inboxes, WhatsApp, and voice calls with autonomous AI agents. Upload CSV → AI does everything else.</p>
-  <div class="hero-btns">
-    <button class="btn-primary"><i class="ti ti-bolt" aria-hidden="true"></i> Start Free Trial</button>
-    <button class="btn-secondary"><i class="ti ti-player-play" aria-hidden="true"></i> Watch demo</button>
-  </div>
-
-  <!-- DASHBOARD PREVIEW -->
-  <div class="dash-preview">
-    <div class="dash-chrome">
-      <div class="chrome-dots">
-        <span style="background:#f87171;"></span>
-        <span style="background:#fbbf24;"></span>
-        <span style="background:#4ade80;"></span>
-      </div>
-      <div class="url-bar">
-        <div class="url-pill"><span class="url-dot"></span> vayuos.online/dashboard</div>
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sb-logo">
+      <div class="logo-wrap">
+        <div class="logo-mark"><i class="ti ti-bolt" aria-hidden="true"></i></div>
+        <div>
+          <div class="logo-name">VAYU OS</div>
+          <div class="logo-tag">Revenue AI</div>
+        </div>
       </div>
     </div>
-    <div class="dash-body">
-      <div class="kpi-row">
-        <div class="kpi-card">
-          <div class="kpi-label">Total Leads</div>
-          <div class="kpi-val" style="color:#4f46e5;">1,247</div>
-          <div class="kpi-delta">+124 today</div>
+
+    <div class="sb-section">
+      <div class="sb-section-label">Workspace</div>
+      <div class="nav-item active"><i class="ti ti-layout-dashboard" aria-hidden="true"></i> Dashboard</div>
+      <div class="nav-item"><i class="ti ti-users" aria-hidden="true"></i> Leads</div>
+      <div class="nav-item"><i class="ti ti-mail" aria-hidden="true"></i> InboxOS</div>
+      <div class="nav-item"><i class="ti ti-brand-whatsapp" aria-hidden="true"></i> WhatsApp AI</div>
+      <div class="nav-item"><i class="ti ti-phone" aria-hidden="true"></i> Voice AI</div>
+      <div class="nav-item"><i class="ti ti-chart-area" aria-hidden="true"></i> Analytics</div>
+    </div>
+
+    <div class="sb-section">
+      <div class="sb-section-label">Setup</div>
+      <div class="nav-item"><i class="ti ti-plug" aria-hidden="true"></i> Connect</div>
+      <div class="nav-item"><i class="ti ti-adjustments" aria-hidden="true"></i> Settings</div>
+    </div>
+
+    <div class="sb-bottom">
+      <div class="trial-bar">
+        <div class="trial-bar-top">
+          <span class="trial-label">Trial Period</span>
+          <span class="trial-days">5 days left</span>
         </div>
-        <div class="kpi-card">
-          <div class="kpi-label">HOT Leads</div>
-          <div class="kpi-val" style="color:#ef4444;">38</div>
-          <div class="kpi-delta">+12 this week</div>
+        <div class="trial-track"><div class="trial-fill"></div></div>
+      </div>
+      <div style="height:6px;"></div>
+      <div class="user-block">
+        <div class="user-avatar">AK</div>
+        <div>
+          <div class="user-name">Arjun Kumar</div>
+          <div class="user-role">Workspace Admin</div>
         </div>
-        <div class="kpi-card">
-          <div class="kpi-label">Meetings Booked</div>
-          <div class="kpi-val" style="color:#16a34a;">14</div>
-          <div class="kpi-delta">+3 today</div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-label">Avg Intent Score</div>
-          <div class="kpi-val" style="color:#d97706;">68.4</div>
-          <div class="kpi-delta">+5.2 pts</div>
+        <i class="ti ti-dots" style="margin-left:auto;color:var(--ink-4);font-size:15px;" aria-hidden="true"></i>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <div class="topbar-left">
+        <div class="topbar-title">Executive Dashboard</div>
+        <div class="topbar-sub">VAYU·OS / WORKSPACE — LIVE SYNC ACTIVE</div>
+      </div>
+      <div class="topbar-right">
+        <div class="status-pill"><span class="pulse"></span> All agents running</div>
+        <div class="icon-btn"><i class="ti ti-refresh" aria-hidden="true"></i></div>
+        <div class="icon-btn"><i class="ti ti-bell" aria-hidden="true"></i></div>
+        <button class="upload-btn"><i class="ti ti-upload" style="font-size:13px;" aria-hidden="true"></i> Upload CSV</button>
+      </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content">
+
+      <!-- DATE HEADER -->
+      <div class="date-header fade-1">
+        <div class="date-label">THURSDAY, 16 MAY 2026 · IST 09:42:11</div>
+        <div class="period-tabs">
+          <div class="period-tab">7D</div>
+          <div class="period-tab active">30D</div>
+          <div class="period-tab">90D</div>
         </div>
       </div>
-      <div class="dash-grid">
-        <div class="dash-card">
-          <div class="dash-card-title">
-            Live AI Activity
-            <div style="display:flex;align-items:center;gap:5px;"><span class="live-dot"></span><span style="font-size:10px;color:var(--color-text-secondary);">Real-time</span></div>
+
+      <!-- KPI GRID -->
+      <div class="kpi-grid fade-2">
+
+        <div class="kpi-card c-indigo">
+          <div class="kpi-icon-row">
+            <div class="kpi-icon" style="background:var(--indigo-light);"><i class="ti ti-users" style="color:var(--indigo);font-size:15px;" aria-hidden="true"></i></div>
+            <div class="spark" id="spark-leads"></div>
           </div>
-          <div class="activity-item"><span class="act-dot" style="background:#ef4444;"></span><span class="act-text">HOT lead: Nexus Realty replied on WhatsApp</span><span class="act-time">2s</span></div>
-          <div class="activity-item"><span class="act-dot" style="background:#4f46e5;"></span><span class="act-text">Cold email sent to 47 new leads</span><span class="act-time">18s</span></div>
-          <div class="activity-item"><span class="act-dot" style="background:#16a34a;"></span><span class="act-text">AI called SkyTech — meeting booked</span><span class="act-time">1m</span></div>
-          <div class="activity-item"><span class="act-dot" style="background:#8b5cf6;"></span><span class="act-text">InboxOS classified 12 emails automatically</span><span class="act-time">3m</span></div>
+          <div class="kpi-lbl">Total Leads</div>
+          <div class="kpi-val" style="color:var(--indigo);">1,247</div>
+          <div class="kpi-delta up"><i class="ti ti-trending-up" style="font-size:12px;" aria-hidden="true"></i> +124 today</div>
         </div>
-        <div class="dash-card">
-          <div class="dash-card-title">Lead Funnel</div>
+
+        <div class="kpi-card c-red">
+          <div class="kpi-icon-row">
+            <div class="kpi-icon" style="background:var(--red-light);"><i class="ti ti-bolt" style="color:var(--red);font-size:15px;" aria-hidden="true"></i></div>
+            <div class="spark" id="spark-hot"></div>
+          </div>
+          <div class="kpi-lbl">HOT Leads</div>
+          <div class="kpi-val" style="color:var(--red);">38</div>
+          <div class="kpi-delta up"><i class="ti ti-trending-up" style="font-size:12px;" aria-hidden="true"></i> +12 this week</div>
+        </div>
+
+        <div class="kpi-card c-teal">
+          <div class="kpi-icon-row">
+            <div class="kpi-icon" style="background:var(--teal-light);"><i class="ti ti-mail" style="color:var(--teal);font-size:15px;" aria-hidden="true"></i></div>
+            <div class="spark" id="spark-email"></div>
+          </div>
+          <div class="kpi-lbl">Emails Sent</div>
+          <div class="kpi-val" style="color:var(--teal);">4,830</div>
+          <div class="kpi-delta up"><i class="ti ti-trending-up" style="font-size:12px;" aria-hidden="true"></i> +24% MoM</div>
+        </div>
+
+        <div class="kpi-card c-violet">
+          <div class="kpi-icon-row">
+            <div class="kpi-icon" style="background:var(--violet-light);"><i class="ti ti-brand-whatsapp" style="color:var(--violet);font-size:15px;" aria-hidden="true"></i></div>
+            <div class="spark" id="spark-wa"></div>
+          </div>
+          <div class="kpi-lbl">WA Messages</div>
+          <div class="kpi-val" style="color:var(--violet);">2,104</div>
+          <div class="kpi-delta up"><i class="ti ti-trending-up" style="font-size:12px;" aria-hidden="true"></i> +18% MoM</div>
+        </div>
+
+        <div class="kpi-card c-amber">
+          <div class="kpi-icon-row">
+            <div class="kpi-icon" style="background:var(--amber-light);"><i class="ti ti-phone" style="color:var(--amber);font-size:15px;" aria-hidden="true"></i></div>
+            <div class="spark" id="spark-calls"></div>
+          </div>
+          <div class="kpi-lbl">AI Calls Made</div>
+          <div class="kpi-val" style="color:var(--amber);">312</div>
+          <div class="kpi-delta up"><i class="ti ti-trending-up" style="font-size:12px;" aria-hidden="true"></i> +5% MoM</div>
+        </div>
+
+        <div class="kpi-card c-green">
+          <div class="kpi-icon-row">
+            <div class="kpi-icon" style="background:var(--green-light);"><i class="ti ti-calendar-check" style="color:var(--green);font-size:15px;" aria-hidden="true"></i></div>
+            <div class="spark" id="spark-meets"></div>
+          </div>
+          <div class="kpi-lbl">Meetings Booked</div>
+          <div class="kpi-val" style="color:var(--green);">14</div>
+          <div class="kpi-delta up"><i class="ti ti-trending-up" style="font-size:12px;" aria-hidden="true"></i> +3 today</div>
+        </div>
+
+      </div>
+
+      <!-- ROW: CHART + FUNNEL -->
+      <div class="row row-2-1 fade-3">
+
+        <div class="card">
+          <div class="card-hdr">
+            <span class="card-title">30-Day Activity Trend</span>
+            <div style="display:flex;align-items:center;gap:6px;">
+              <div class="card-badge"><span class="live-dot"></span> Live</div>
+            </div>
+          </div>
+          <div class="chart-wrap">
+            <svg id="trend-chart" width="100%" height="120" style="display:block;overflow:visible;" aria-label="30-day activity trend chart" role="img"></svg>
+            <div class="chart-labels-x" id="chart-x-labels"></div>
+          </div>
+          <div class="chart-legend">
+            <div class="leg-item"><div class="leg-dot" style="background:var(--indigo);"></div> Leads</div>
+            <div class="leg-item"><div class="leg-dot" style="background:var(--teal);"></div> Emails</div>
+            <div class="leg-item"><div class="leg-dot" style="background:var(--violet);"></div> WhatsApp</div>
+            <div class="leg-item"><div class="leg-dot" style="background:var(--amber);"></div> Calls</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-hdr">
+            <span class="card-title">Lead Funnel</span>
+            <span style="font-size:10px;color:var(--ink-4);font-family:'Geist Mono',monospace;">ALL TIME</span>
+          </div>
           <div class="funnel-item">
-            <div class="funnel-label"><span>Uploaded</span><span style="color:#4f46e5;font-weight:500;">1,247</span></div>
-            <div class="funnel-bar"><div class="funnel-fill" style="width:100%;background:#4f46e5;"></div></div>
+            <div class="funnel-row">
+              <span class="funnel-lbl">Uploaded</span>
+              <div><span class="funnel-val" style="color:var(--indigo);">1,247</span></div>
+            </div>
+            <div class="funnel-track"><div class="funnel-fill" style="width:100%;background:var(--indigo);"></div></div>
           </div>
           <div class="funnel-item">
-            <div class="funnel-label"><span>Contacted</span><span style="color:#8b5cf6;font-weight:500;">891</span></div>
-            <div class="funnel-bar"><div class="funnel-fill" style="width:71%;background:#8b5cf6;"></div></div>
+            <div class="funnel-row">
+              <span class="funnel-lbl">Contacted</span>
+              <div><span class="funnel-val" style="color:var(--violet);">891</span><span class="funnel-pct">71%</span></div>
+            </div>
+            <div class="funnel-track"><div class="funnel-fill" style="width:71%;background:var(--violet);"></div></div>
           </div>
           <div class="funnel-item">
-            <div class="funnel-label"><span>Warm</span><span style="color:#16a34a;font-weight:500;">203</span></div>
-            <div class="funnel-bar"><div class="funnel-fill" style="width:16%;background:#16a34a;"></div></div>
+            <div class="funnel-row">
+              <span class="funnel-lbl">Replied</span>
+              <div><span class="funnel-val" style="color:var(--teal);">234</span><span class="funnel-pct">19%</span></div>
+            </div>
+            <div class="funnel-track"><div class="funnel-fill" style="width:19%;background:var(--teal);"></div></div>
           </div>
           <div class="funnel-item">
-            <div class="funnel-label"><span>HOT</span><span style="color:#ef4444;font-weight:500;">38</span></div>
-            <div class="funnel-bar"><div class="funnel-fill" style="width:3%;background:#ef4444;"></div></div>
+            <div class="funnel-row">
+              <span class="funnel-lbl">Warm</span>
+              <div><span class="funnel-val" style="color:var(--amber);">89</span><span class="funnel-pct">7%</span></div>
+            </div>
+            <div class="funnel-track"><div class="funnel-fill" style="width:7%;background:var(--amber);"></div></div>
+          </div>
+          <div class="funnel-item">
+            <div class="funnel-row">
+              <span class="funnel-lbl">HOT 🔥</span>
+              <div><span class="funnel-val" style="color:var(--red);">38</span><span class="funnel-pct">3%</span></div>
+            </div>
+            <div class="funnel-track"><div class="funnel-fill" style="width:3%;background:var(--red);"></div></div>
           </div>
         </div>
+
       </div>
-    </div>
-  </div>
-</section>
 
-<!-- CAPABILITIES -->
-<section class="section">
-  <div style="text-align:center;margin-bottom:28px;">
-    <div class="section-label">AI Capabilities</div>
-    <div class="section-title">Six AI agents. One operating system.</div>
-    <div class="section-sub">Every revenue channel — automated, intelligent, and running 24/7.</div>
-  </div>
-  <div class="caps-grid">
-    <div class="cap-card">
-      <div class="cap-icon" style="background:#eef2ff;"><i class="ti ti-mail" style="color:#4f46e5;font-size:17px;" aria-hidden="true"></i></div>
-      <div class="cap-title">InboxOS</div>
-      <div class="cap-desc">AI classifies, labels, and auto-replies to every email. P1 alerts. Zero inbox overload.</div>
-      <div class="cap-stat" style="background:#eef2ff;color:#4f46e5;">94% auto-handled</div>
-    </div>
-    <div class="cap-card">
-      <div class="cap-icon" style="background:#f5f3ff;"><i class="ti ti-brand-whatsapp" style="color:#8b5cf6;font-size:17px;" aria-hidden="true"></i></div>
-      <div class="cap-title">WhatsApp AI</div>
-      <div class="cap-desc">Qualifies leads in real-time on WhatsApp. Detects intent, escalates HOT leads instantly.</div>
-      <div class="cap-stat" style="background:#f5f3ff;color:#8b5cf6;">2.7× reply rate</div>
-    </div>
-    <div class="cap-card">
-      <div class="cap-icon" style="background:#ecfeff;"><i class="ti ti-bolt" style="color:#0891b2;font-size:17px;" aria-hidden="true"></i></div>
-      <div class="cap-title">AI Outreach</div>
-      <div class="cap-desc">Upload CSV → AI enriches, verifies email, sends cold emails and WhatsApp in parallel.</div>
-      <div class="cap-stat" style="background:#ecfeff;color:#0891b2;">&lt; 60s launch</div>
-    </div>
-    <div class="cap-card">
-      <div class="cap-icon" style="background:#fffbeb;"><i class="ti ti-phone" style="color:#d97706;font-size:17px;" aria-hidden="true"></i></div>
-      <div class="cap-title">AI Voice Calls</div>
-      <div class="cap-desc">Vapi-powered AI calls prospects, qualifies them, and books Google Meet automatically.</div>
-      <div class="cap-stat" style="background:#fffbeb;color:#d97706;">24/7 calling</div>
-    </div>
-    <div class="cap-card">
-      <div class="cap-icon" style="background:#ecfdf5;"><i class="ti ti-brain" style="color:#16a34a;font-size:17px;" aria-hidden="true"></i></div>
-      <div class="cap-title">Lead Intelligence</div>
-      <div class="cap-desc">Intent scoring, enrichment, industry detection. Know who's HOT before you call.</div>
-      <div class="cap-stat" style="background:#ecfdf5;color:#16a34a;">0-100 scoring</div>
-    </div>
-    <div class="cap-card">
-      <div class="cap-icon" style="background:#fef2f2;"><i class="ti ti-chart-bar" style="color:#ef4444;font-size:17px;" aria-hidden="true"></i></div>
-      <div class="cap-title">AI Insights</div>
-      <div class="cap-desc">Revenue AI generates daily insights: what's working, what's not, where to double down.</div>
-      <div class="cap-stat" style="background:#fef2f2;color:#ef4444;">Daily reports</div>
-    </div>
-  </div>
-</section>
+      <!-- ROW: ACTIVITY + HOT LEADS + CHANNELS -->
+      <div class="row row-3 fade-4">
 
-<!-- HOW IT WORKS (dark) -->
-<section class="dark-section">
-  <div style="text-align:center;margin-bottom:8px;">
-    <div class="section-label">Workflow</div>
-    <div class="section-title" style="color:#fff;">CSV in. Meetings out.</div>
-    <div class="section-sub">The complete outbound motion runs in under 60 seconds.</div>
-  </div>
-  <div class="steps">
-    <div class="step">
-      <div class="step-num"><span class="step-emoji">📂</span><span class="step-n">01</span></div>
-      <div class="step-body"><div class="step-title">Upload CSV</div><div class="step-desc">Drop your lead list. AI starts in under 60 seconds. No setup required.</div></div>
-    </div>
-    <div class="step">
-      <div class="step-num"><span class="step-emoji">🔍</span><span class="step-n">02</span></div>
-      <div class="step-body"><div class="step-title">AI enriches every lead</div><div class="step-desc">Groq LLM enriches each lead — industry, email guess, intent signals, website info.</div></div>
-    </div>
-    <div class="step">
-      <div class="step-num"><span class="step-emoji">🚀</span><span class="step-n">03</span></div>
-      <div class="step-body"><div class="step-title">Waterfall launches</div><div class="step-desc">Email + WhatsApp + Voice call fires simultaneously. No manual work at all.</div></div>
-    </div>
-    <div class="step">
-      <div class="step-num"><span class="step-emoji">🎯</span><span class="step-n">04</span></div>
-      <div class="step-body"><div class="step-title">AI qualifies replies</div><div class="step-desc">Every reply scored 0–100. HOT leads get immediate escalation to your team.</div></div>
-    </div>
-    <div class="step">
-      <div class="step-num"><span class="step-emoji">📅</span><span class="step-n">05</span></div>
-      <div class="step-body"><div class="step-title">Meetings booked</div><div class="step-desc">AI books Google Meet slots directly. Your calendar fills itself, automatically.</div></div>
-    </div>
-  </div>
-</section>
+        <div class="card">
+          <div class="card-hdr">
+            <span class="card-title">Live AI Activity Feed</span>
+            <div class="card-badge"><span class="live-dot"></span> Real-time</div>
+          </div>
 
-<!-- PRICING -->
-<section class="section">
-  <div style="text-align:center;margin-bottom:4px;">
-    <div class="section-label">Pricing</div>
-    <div class="section-title">Start free. No card required.</div>
-    <div class="section-sub">Full access for 7 days. Then choose a plan.</div>
-  </div>
-  <div class="pricing-grid">
-    <div class="price-card">
-      <div class="price-name">7-Day Trial</div>
-      <div class="price-amount">₹0</div>
-      <div class="price-period">for 7 days</div>
-      <div class="price-features">
-        <div class="price-feature"><span class="check">✓</span> 500 leads</div>
-        <div class="price-feature"><span class="check">✓</span> 200 emails</div>
-        <div class="price-feature"><span class="check">✓</span> 100 WhatsApp</div>
-        <div class="price-feature"><span class="check">✓</span> 50 AI calls</div>
-        <div class="price-feature"><span class="check">✓</span> 1 Gmail account</div>
+          <div class="act-item">
+            <div class="act-node" style="background:var(--red-light);"><i class="ti ti-bolt" style="color:var(--red);" aria-hidden="true"></i></div>
+            <div class="act-body">
+              <div class="act-text">HOT lead detected — Nexus Realty replied on WhatsApp</div>
+              <div class="act-sub">Intent score: 87 · Escalation sent to Arjun</div>
+            </div>
+            <div class="act-time">2s</div>
+          </div>
+
+          <div class="act-item">
+            <div class="act-node" style="background:var(--indigo-light);"><i class="ti ti-mail" style="color:var(--indigo);" aria-hidden="true"></i></div>
+            <div class="act-body">
+              <div class="act-text">Cold email batch sent to 47 new leads</div>
+              <div class="act-sub">Groq enriched · DNS verified · Open tracking on</div>
+            </div>
+            <div class="act-time">18s</div>
+          </div>
+
+          <div class="act-item">
+            <div class="act-node" style="background:var(--green-light);"><i class="ti ti-calendar" style="color:var(--green);" aria-hidden="true"></i></div>
+            <div class="act-body">
+              <div class="act-text">AI Voice Call — SkyTech Solutions · Meeting booked</div>
+              <div class="act-sub">Google Meet · 20 May 3:00 PM IST · Transcript saved</div>
+            </div>
+            <div class="act-time">1m</div>
+          </div>
+
+          <div class="act-item">
+            <div class="act-node" style="background:var(--violet-light);"><i class="ti ti-mail-opened" style="color:var(--violet);" aria-hidden="true"></i></div>
+            <div class="act-body">
+              <div class="act-text">InboxOS classified 12 emails automatically</div>
+              <div class="act-sub">4 P1 alerts · 5 auto-replied · 3 labeled</div>
+            </div>
+            <div class="act-time">3m</div>
+          </div>
+
+          <div class="act-item">
+            <div class="act-node" style="background:var(--teal-light);"><i class="ti ti-brand-whatsapp" style="color:var(--teal);" aria-hidden="true"></i></div>
+            <div class="act-body">
+              <div class="act-text">WA Outreach — 120-lead Tech Sector batch launched</div>
+              <div class="act-sub">Waterfall active · Enriching in parallel</div>
+            </div>
+            <div class="act-time">5m</div>
+          </div>
+
+          <div class="act-item">
+            <div class="act-node" style="background:var(--amber-light);"><i class="ti ti-chart-bar" style="color:var(--amber);" aria-hidden="true"></i></div>
+            <div class="act-body">
+              <div class="act-text">Daily AI Insights generated for your workspace</div>
+              <div class="act-sub">3 revenue actions recommended · 8 AM IST digest</div>
+            </div>
+            <div class="act-time">8m</div>
+          </div>
+
+        </div>
+
+        <div class="card">
+          <div class="card-hdr">
+            <span class="card-title">HOT Leads</span>
+            <span class="card-link">View all →</span>
+          </div>
+
+          <div class="hot-item">
+            <div class="hot-av" style="background:var(--red-light);color:var(--red);">NR</div>
+            <div style="flex:1;">
+              <div class="hot-co">Nexus Realty</div>
+              <div class="hot-meta">Real Estate · WA replied</div>
+            </div>
+            <div class="hot-score"><div class="hot-score-val" style="color:var(--red);">87</div><div class="hot-score-lbl">Intent</div></div>
+            <div class="intent-ring" style="background:var(--red);animation:pulse 1.5s infinite;"></div>
+          </div>
+
+          <div class="hot-item">
+            <div class="hot-av" style="background:var(--amber-light);color:var(--amber);">OB</div>
+            <div style="flex:1;">
+              <div class="hot-co">Orbit Builders</div>
+              <div class="hot-meta">Construction · Email replied</div>
+            </div>
+            <div class="hot-score"><div class="hot-score-val" style="color:var(--amber);">74</div><div class="hot-score-lbl">Intent</div></div>
+            <div class="intent-ring" style="background:#F59E0B;"></div>
+          </div>
+
+          <div class="hot-item">
+            <div class="hot-av">ST</div>
+            <div style="flex:1;">
+              <div class="hot-co">SkyTech Solutions</div>
+              <div class="hot-meta">SaaS · Meeting booked</div>
+            </div>
+            <div class="hot-score"><div class="hot-score-val" style="color:var(--green);">71</div><div class="hot-score-lbl">Intent</div></div>
+            <div class="intent-ring" style="background:var(--green);"></div>
+          </div>
+
+          <div class="hot-item">
+            <div class="hot-av" style="background:var(--teal-light);color:var(--teal);">ZF</div>
+            <div style="flex:1;">
+              <div class="hot-co">Zenith Finance</div>
+              <div class="hot-meta">Finance · Call completed</div>
+            </div>
+            <div class="hot-score"><div class="hot-score-val" style="color:var(--teal);">68</div><div class="hot-score-lbl">Intent</div></div>
+            <div class="intent-ring" style="background:var(--amber);"></div>
+          </div>
+
+          <div class="hot-item">
+            <div class="hot-av" style="background:var(--violet-light);color:var(--violet);">PG</div>
+            <div style="flex:1;">
+              <div class="hot-co">PrimeGrowth Co.</div>
+              <div class="hot-meta">EdTech · WA + Email</div>
+            </div>
+            <div class="hot-score"><div class="hot-score-val" style="color:var(--violet);">63</div><div class="hot-score-lbl">Intent</div></div>
+            <div class="intent-ring" style="background:var(--amber);"></div>
+          </div>
+
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:12px;">
+
+          <div class="card">
+            <div class="card-hdr">
+              <span class="card-title">Channel Performance</span>
+              <span style="font-size:10px;color:var(--ink-4);font-family:'Geist Mono',monospace;">30D ENGAGE</span>
+            </div>
+            <div class="ch-row">
+              <span class="ch-name">WhatsApp</span>
+              <div class="ch-track"><div class="ch-fill" style="width:68%;background:var(--violet);"></div></div>
+              <span class="ch-pct" style="color:var(--violet);">68%</span>
+            </div>
+            <div class="ch-row">
+              <span class="ch-name">Voice AI</span>
+              <div class="ch-track"><div class="ch-fill" style="width:51%;background:var(--amber);"></div></div>
+              <span class="ch-pct" style="color:var(--amber);">51%</span>
+            </div>
+            <div class="ch-row">
+              <span class="ch-name">Email</span>
+              <div class="ch-track"><div class="ch-fill" style="width:34%;background:var(--teal);"></div></div>
+              <span class="ch-pct" style="color:var(--teal);">34%</span>
+            </div>
+          </div>
+
+          <div class="card" style="flex:1;">
+            <div class="card-hdr">
+              <span class="card-title">AI Response Stats</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 10px;background:var(--surface-2);border-radius:8px;border:1px solid var(--border);">
+                <span style="font-size:11px;color:var(--ink-3);">Avg reply time</span>
+                <span style="font-size:13px;font-weight:600;color:var(--green);font-family:'Geist Mono',monospace;">&lt; 4 min</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 10px;background:var(--surface-2);border-radius:8px;border:1px solid var(--border);">
+                <span style="font-size:11px;color:var(--ink-3);">Conversion rate</span>
+                <span style="font-size:13px;font-weight:600;color:var(--indigo);font-family:'Geist Mono',monospace;">34%</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 10px;background:var(--surface-2);border-radius:8px;border:1px solid var(--border);">
+                <span style="font-size:11px;color:var(--ink-3);">Leads auto-handled</span>
+                <span style="font-size:13px;font-weight:600;color:var(--violet);font-family:'Geist Mono',monospace;">94%</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 10px;background:var(--surface-2);border-radius:8px;border:1px solid var(--border);">
+                <span style="font-size:11px;color:var(--ink-3);">AI uptime (30d)</span>
+                <span style="font-size:13px;font-weight:600;color:var(--green);font-family:'Geist Mono',monospace;">99.9%</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
       </div>
-      <button class="price-btn">Start Free Trial</button>
-    </div>
-    <div class="price-card featured">
-      <div style="font-size:10px;color:#818cf8;font-weight:500;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px;">Most Popular</div>
-      <div class="price-name">Starter</div>
-      <div class="price-amount" style="color:#fff;">₹1,999</div>
-      <div class="price-period">/ month</div>
-      <div class="price-features">
-        <div class="price-feature"><span class="check">✓</span> 2,000 leads/month</div>
-        <div class="price-feature"><span class="check">✓</span> 1,000 emails</div>
-        <div class="price-feature"><span class="check">✓</span> 500 WhatsApp</div>
-        <div class="price-feature"><span class="check">✓</span> 200 AI calls</div>
-        <div class="price-feature"><span class="check">✓</span> 2 team members</div>
+
+      <!-- AI INSIGHTS -->
+      <div class="section-divider fade-5">
+        <div class="divider-line"></div>
+        <div class="divider-label">AI Revenue Insights · Generated 08:00 IST</div>
+        <div class="divider-line"></div>
       </div>
-      <button class="price-btn">Coming Soon</button>
-    </div>
-    <div class="price-card">
-      <div class="price-name">Pro</div>
-      <div class="price-amount">₹4,999</div>
-      <div class="price-period">/ month</div>
-      <div class="price-features">
-        <div class="price-feature"><span class="check">✓</span> 10,000 leads/month</div>
-        <div class="price-feature"><span class="check">✓</span> 5,000 emails</div>
-        <div class="price-feature"><span class="check">✓</span> 2,500 WhatsApp</div>
-        <div class="price-feature"><span class="check">✓</span> 1,000 AI calls</div>
-        <div class="price-feature"><span class="check">✓</span> 5 team members</div>
+
+      <div class="insights-grid fade-6">
+
+        <div class="insight-card" style="background:var(--red-light);border-color:#FECACA;">
+          <span class="ins-emoji">🔥</span>
+          <div class="ins-title" style="color:var(--red);">3 HOT Leads Need You Now</div>
+          <div class="ins-text" style="color:#7F1D1D;">Nexus Realty, Orbit Builders, and SkyTech have shown purchase signals in the last 2 hours. Contact within 24 hrs for best conversion.</div>
+          <div class="ins-badge" style="background:#FECACA;color:var(--red);">High Priority</div>
+        </div>
+
+        <div class="insight-card" style="background:var(--indigo-light);border-color:var(--indigo-mid);">
+          <span class="ins-emoji">📈</span>
+          <div class="ins-title" style="color:var(--indigo);">WhatsApp Outperforms 2.7×</div>
+          <div class="ins-text" style="color:#1E1B4B;">WA replies convert 2.7× better than email for your sector mix this month. Shifting 20% budget to WA-first could add 8 meetings/month.</div>
+          <div class="ins-badge" style="background:var(--indigo-mid);color:var(--indigo);">Channel Trend</div>
+        </div>
+
+        <div class="insight-card" style="background:var(--green-light);border-color:#BBF7D0;">
+          <span class="ins-emoji">⚡</span>
+          <div class="ins-title" style="color:var(--green);">Speed Wins: Keep AI Reply On</div>
+          <div class="ins-text" style="color:#14532D;">Leads replied to within 5 min convert at 34% vs just 8% after 1 hour. Your current avg reply time of &lt;4 min is a competitive moat.</div>
+          <div class="ins-badge" style="background:#BBF7D0;color:var(--green);">Recommendation</div>
+        </div>
+
       </div>
-      <button class="price-btn">Coming Soon</button>
-    </div>
-  </div>
-</section>
 
-<!-- FAQ -->
-<section class="section" style="padding-top:0;">
-  <div style="text-align:center;margin-bottom:20px;">
-    <div class="section-label">FAQ</div>
-    <div class="section-title">Questions answered.</div>
-  </div>
-  <div class="faq-list">
-    <div class="faq-item">
-      <div class="faq-q">Do I need to enter any API keys? <i class="ti ti-chevron-down" style="font-size:14px;color:var(--color-text-secondary);" aria-hidden="true"></i></div>
-      <div class="faq-a">No. VAYU OS manages all AI infrastructure centrally. You connect Gmail (1 click), scan a WhatsApp QR code, and upload your CSV. That's it.</div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-q">How does the WhatsApp connection work? <i class="ti ti-chevron-down" style="font-size:14px;color:var(--color-text-secondary);" aria-hidden="true"></i></div>
-      <div class="faq-a">Click "Connect WhatsApp", a QR code appears. Scan it with your phone's WhatsApp. The session is stored securely server-side — no Business API needed.</div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-q">What happens after my 7-day trial ends? <i class="ti ti-chevron-down" style="font-size:14px;color:var(--color-text-secondary);" aria-hidden="true"></i></div>
-      <div class="faq-a">All AI agents pause automatically. Your data stays intact. Upgrade to continue — no data loss, ever.</div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-q">How is VAYU OS different from Apollo or Instantly? <i class="ti ti-chevron-down" style="font-size:14px;color:var(--color-text-secondary);" aria-hidden="true"></i></div>
-      <div class="faq-a">Those are tools. VAYU OS is an operating system. It handles email, WhatsApp, voice, inbox, and AI insights — without you touching any settings.</div>
-    </div>
-  </div>
-</section>
+      <div style="height:8px;"></div>
 
-<!-- CTA BANNER -->
-<div class="cta-section">
-  <h2>Ready to let AI<br>run your revenue?</h2>
-  <p>Start your 7-day free trial. No credit card. No setup fees.</p>
-  <button class="cta-btn"><i class="ti ti-bolt" aria-hidden="true"></i> Start Free Trial</button>
-</div>
+    </div><!-- /content -->
+  </div><!-- /main -->
+</div><!-- /shell -->
 
-<!-- FOOTER -->
-<footer class="footer">
-  <div class="footer-logo">
-    <div class="logo-icon" style="width:22px;height:22px;border-radius:5px;font-size:11px;"><i class="ti ti-bolt" aria-hidden="true"></i></div>
-    VAYU OS
-  </div>
-  <div class="footer-links">
-    <a href="#">Privacy</a>
-    <a href="#">Terms</a>
-    <a href="#">Contact</a>
-  </div>
-  <div class="footer-copy">© 2025 VAYU OS</div>
-</footer>
+<script>
+// SPARKLINES
+function drawSpark(id, data, color) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const max = Math.max(...data);
+  const heights = [8,12,9,14,11,16,18];
+  data.forEach((v, i) => {
+    const b = document.createElement('div');
+    b.className = 'spark-bar';
+    b.style.height = Math.round((v/max)*16+2)+'px';
+    b.style.background = color;
+    b.style.opacity = i === data.length-1 ? '1' : '0.4';
+    el.appendChild(b);
+  });
+}
+drawSpark('spark-leads', [18,32,25,47,38,55,62], '#3730A3');
+drawSpark('spark-hot', [4,7,5,11,8,14,15], '#B91C1C');
+drawSpark('spark-email', [45,78,60,95,80,110,130], '#0E7490');
+drawSpark('spark-wa', [22,40,35,58,48,70,85], '#6D28D9');
+drawSpark('spark-calls', [8,14,10,18,15,22,28], '#92400E');
+drawSpark('spark-meets', [1,3,2,4,3,5,6], '#15803D');
 
-</div>
+// TREND CHART
+(function(){
+  const days = ['1 Apr','5 Apr','10 Apr','15 Apr','20 Apr','25 Apr','30 Apr'];
+  const datasets = [
+    { data: [18,32,25,47,38,55,62], color: '#3730A3', dash: false },
+    { data: [45,78,60,95,80,110,130], color: '#0E7490', dash: [4,3] },
+    { data: [22,40,35,58,48,70,85], color: '#6D28D9', dash: [2,3] },
+    { data: [8,14,10,18,15,22,28], color: '#92400E', dash: [6,3] },
+  ];
+  const W = 560, H = 120, padL = 4, padR = 4, padT = 8, padB = 4;
+  const allVals = datasets.flatMap(d => d.data);
+  const maxV = Math.max(...allVals) * 1.1;
+  const svg = document.getElementById('trend-chart');
+
+  function xOf(i) { return padL + (i/(days.length-1))*(W-padL-padR); }
+  function yOf(v) { return padT + (1 - v/maxV)*(H-padT-padB); }
+
+  // Grid lines
+  [0.25,0.5,0.75,1].forEach(f => {
+    const y = padT + (1-f)*(H-padT-padB);
+    const line = document.createElementNS('http://www.w3.org/2000/svg','line');
+    line.setAttribute('x1','0'); line.setAttribute('x2',W);
+    line.setAttribute('y1',y); line.setAttribute('y2',y);
+    line.setAttribute('stroke','#E5E2DC'); line.setAttribute('stroke-width','0.5');
+    svg.appendChild(line);
+  });
+
+  // Area fills
+  datasets.forEach(ds => {
+    const pts = ds.data.map((v,i) => `${xOf(i)},${yOf(v)}`).join(' ');
+    const first = `${xOf(0)},${H}`;
+    const last = `${xOf(ds.data.length-1)},${H}`;
+    const poly = document.createElementNS('http://www.w3.org/2000/svg','polygon');
+    poly.setAttribute('points', `${first} ${pts} ${last}`);
+    poly.setAttribute('fill', ds.color);
+    poly.setAttribute('opacity', '0.06');
+    svg.appendChild(poly);
+  });
+
+  // Lines
+  datasets.forEach(ds => {
+    let d = ds.data.map((v,i) => `${i===0?'M':'L'}${xOf(i)},${yOf(v)}`).join(' ');
+    const path = document.createElementNS('http://www.w3.org/2000/svg','path');
+    path.setAttribute('d', d);
+    path.setAttribute('fill','none');
+    path.setAttribute('stroke', ds.color);
+    path.setAttribute('stroke-width','1.5');
+    path.setAttribute('stroke-linecap','round');
+    path.setAttribute('stroke-linejoin','round');
+    if (ds.dash) path.setAttribute('stroke-dasharray', ds.dash.join(','));
+    svg.appendChild(path);
+  });
+
+  // Dots at last point
+  datasets.forEach(ds => {
+    const i = ds.data.length-1;
+    const cx = xOf(i), cy = yOf(ds.data[i]);
+    const c = document.createElementNS('http://www.w3.org/2000/svg','circle');
+    c.setAttribute('cx',cx); c.setAttribute('cy',cy);
+    c.setAttribute('r','3.5');
+    c.setAttribute('fill',ds.color);
+    c.setAttribute('stroke','#fff');
+    c.setAttribute('stroke-width','1.5');
+    svg.appendChild(c);
+  });
+
+  // X labels
+  const labelsEl = document.getElementById('chart-x-labels');
+  days.forEach(d => {
+    const span = document.createElement('span');
+    span.className = 'chart-label-x';
+    span.textContent = d;
+    labelsEl.appendChild(span);
+  });
+})();
+
+// Period tab interaction
+document.querySelectorAll('.period-tab').forEach(t => {
+  t.addEventListener('click', function(){
+    document.querySelectorAll('.period-tab').forEach(x => x.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+</script>
+</html>
